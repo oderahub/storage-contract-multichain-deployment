@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const { PRIVATE_KEY, ETHERSCAN_API_KEY, SEPOLIA_RPC_URL } = process.env
+const { PRIVATE_KEY, ETHERSCAN_API_KEY, SEPOLIA_RPC_URL, BTCS_API_KEY } = process.env
 
 const config: HardhatUserConfig = {
   solidity: '0.8.28',
@@ -24,7 +24,8 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      sepolia: ETHERSCAN_API_KEY || ''
+      sepolia: ETHERSCAN_API_KEY || '',
+      testnet: BTCS_API_KEY || '' // Add API key for testnet
     },
     customChains: [
       {
