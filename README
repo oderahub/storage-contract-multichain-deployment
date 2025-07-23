@@ -36,10 +36,15 @@ storage-contract-multichain-deployment/
 
 ## 🌐 Deployed Contract Addresses
 
-| Network                | Hardhat Address                                | Foundry Address |
-| ---------------------- | ---------------------------------------------- | --------------- |
-| Sepolia (11155111)     | `0x0x287974951879D77AdEcd8B115D2d16ef396B464c` | `0x...`         |
-| CoreDAO Testnet (1114) | `0x...`                                        | `0x...`         |
+| Network                | Hardhat Address                                |
+| ---------------------- | ---------------------------------------------- |
+| Sepolia (11155111)     | `0x0x287974951879D77AdEcd8B115D2d16ef396B464c` |
+| CoreDAO Testnet (1114) | `0xd235B90dc929f7B061EAefdE0C8f020B3Cff47D7`   |
+
+| Network                | Foundry Address                              |
+| ---------------------- | -------------------------------------------- |
+| Sepolia (11155111)     | `0x0fa17619c768416b8246aac388dcd66a23695eb4` |
+| CoreDAO Testnet (1114) | `0xec4c07b0ed2a24a8aed9f4a056277e1fdb4a8a46` |
 
 ## ⚙️ Prerequisites
 
