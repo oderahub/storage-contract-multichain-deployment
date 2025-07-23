@@ -1,0 +1,218 @@
+# 📦 Storage Contract Multichain Deployment
+
+This project demonstrates the deployment and verification of the `Storage.sol` smart contract on the **Sepolia (Ethereum)** and **CoreDAO testnets**, using both **Hardhat** and **Foundry**.
+
+The `Storage.sol` contract allows storing and retrieving a number and a string message.
+
+---
+
+## 🗂 Project Structure
+
+storage-contract-multichain-deployment/
+├── hardhat/
+│ ├── contracts/
+│ │ └── Storage.sol
+│ ├── ignition/
+│ │ └── modules/
+│ │ └── StorageModule.ts
+│ ├── .env
+│ ├── hardhat.config.js
+│ ├── package.json
+│ └── scripts/
+├── foundry/
+│ ├── src/
+│ │ └── Storage.sol
+│ ├── script/
+│ │ └── DeployStorage.s.sol
+│ ├── foundry.toml
+│ └── lib/
+├── README.md
+
+- `hardhat/`: Hardhat-based deployment and verification
+- `foundry/`: Foundry-based deployment and verification
+- `Storage.sol`: Simple contract for storing and retrieving data
+
+---
+
+## 🌐 Deployed Contract Addresses
+
+| Network                | Hardhat Address                                | Foundry Address |
+| ---------------------- | ---------------------------------------------- | --------------- |
+| Sepolia (11155111)     | `0x0x287974951879D77AdEcd8B115D2d16ef396B464c` | `0x...`         |
+| CoreDAO Testnet (1114) | `0x...`                                        | `0x...`         |
+
+## ⚙️ Prerequisites
+
+- **Node.js** v18 or later
+- **Foundry CLI (Forge)**:
+  ```bash
+  curl -L https://foundry.paradigm.xyz | bash
+  foundryup
+  MetaMask with testnet accounts
+  ```
+
+## Faucets:
+
+Sepolia Faucet
+
+CoreDAO Faucet
+
+Etherscan API Key
+
+Git for version control
+
+🧪 Setup Instructions
+🔧 Hardhat
+cd hardhat
+npm install
+
+## Create a .env file:
+
+env
+
+PRIVATE_KEY=your_metamask_private_key
+SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/your_infura_project_id
+ETHERSCAN_API_KEY=your_etherscan_api_key
+
+## 🔨 Foundry
+
+cd foundry
+forge install
+Edit foundry.toml:
+
+toml
+
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+[rpc_endpoints]
+sepolia = "${SEPOLIA_RPC_URL}"
+testnet = "https://rpc.test2.btcs.network"
+
+[etherscan]
+sepolia = { key = "${ETHERSCAN_API_KEY}" }
+testnet = { key = "your-api-key-here", url = "https://api.test2.btcs.network/api" }
+
+## 🚀 Deployment & Verification
+
+Hardhat
+Compile:
+
+cd hardhat
+npx hardhat compile
+Deploy to Sepolia:
+
+npx hardhat ignition deploy ./ignition/modules/StorageModule.ts --network sepolia
+Verify on Sepolia:
+
+npx hardhat ignition verify chain-11155111 --network sepolia
+
+# or
+
+npx hardhat verify --network sepolia DEPLOYED_CONTRACT_ADDRESS
+Deploy to CoreDAO Testnet:
+
+npx hardhat ignition deploy ./ignition/modules/StorageModule.ts --network testnet
+If you encounter transaction underpriced, update hardhat.config.js:
+
+js
+
+testnet: {
+url: 'https://rpc.test2.btcs.network',
+accounts: PRIVATE_KEY ? [`0x${PRIVATE_KEY}`] : [],
+chainId: 1114,
+gasPrice: 3000000000, // 3 Gwei
+}
+To reset stuck deployments:
+
+npx hardhat ignition deploy ./ignition/modules/StorageModule.ts --network testnet --reset
+Verify on CoreDAO:
+
+npx hardhat ignition verify chain-1114 --network testnet
+Foundry
+Compile:
+
+cd foundry
+forge build
+Deploy to Sepolia:
+
+bash
+
+forge script script/DeployStorage.s.sol:DeployStorage --rpc-url sepolia --private-key $PRIVATE_KEY --broadcast
+Verify:
+
+bash
+
+forge verify-contract --chain-id 11155111 --etherscan-api-key $ETHERSCAN_API_KEY DEPLOYED_CONTRACT_ADDRESS src/Storage.sol:Storage
+Deploy to CoreDAO Testnet:
+
+bash
+
+forge script script/DeployStorage.s.sol:DeployStorage --rpc-url testnet --private-key $PRIVATE_KEY --broadcast
+If needed, add gas price:
+
+bash
+
+--gas-price 3000000000
+Verify:
+
+bash
+
+forge verify-contract --chain-id 1114 --verifier-url https://api.test2.btcs.network/api DEPLOYED_CONTRACT_ADDRESS src/Storage.sol:Storage
+🧑‍💻 Interact with the Contract
+Hardhat Console
+bash
+
+cd hardhat
+npx hardhat console --network testnet
+js
+
+const Storage = await ethers.getContractFactory("Storage");
+const storage = await Storage.attach("DEPLOYED_CONTRACT_ADDRESS");
+
+await storage.setNumber(42);
+console.log(await storage.getNumber());
+
+await storage.setMessage("Hello, CoreDAO!");
+console.log(await storage.getMessage());
+Remix
+Connect MetaMask to CoreDAO or Sepolia
+
+Load Storage.sol in Remix
+
+Deploy using the known address
+
+Call setNumber, getNumber, setMessage, getMessage
+
+🛠 Troubleshooting
+CoreDAO Testnet
+Module file missing?
+
+bash
+Copy
+Edit
+ls ignition/modules
+mv ignition/modules/Storage.ts ignition/modules/StorageModule.ts
+Nonce stuck at 0?
+
+bash
+Copy
+Edit
+npx hardhat ignition track-tx <txHash> chain-1114 --network testnet
+Gas issue?
+Ensure at least 1 tCORE2 in wallet.
+
+Sepolia
+Ensure .env includes SEPOLIA_RPC_URL and ETHERSCAN_API_KEY
+
+🔗 GitHub Repository
+Repo: https://github.com/your-username/storage-contract-multichain-deployment
+
+bash
+Copy
+Edit
+git add .
+git commit -m "Deploy and verify Storage.sol on Sepolia and CoreDAO"
+git push origin main
